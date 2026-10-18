@@ -1,0 +1,23 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [
+      "checkpoint.note"
+    ],
+    "entry": "entry.json",
+    "log": null,
+    "ots": null,
+    "proof": "proof.json",
+    "tsr": null,
+    "vkeys": [
+      "demo-log-key+4ab317a3+AYRRWfas2UF7v8fs0HKzwJNeBlS6dFgUQTRlhh391cXH"
+    ]
+  },
+  "description": "The proof declares \"v\": true. Only the integer 1 is accepted.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "inclusion_proof": "fail"
+    }
+  }
+}

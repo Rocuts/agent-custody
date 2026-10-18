@@ -1,0 +1,34 @@
+{
+  "args": {
+    "approver_keys": [
+      "approver-1=62c5ac0e3c37e97661afc9e8b66dad63fcae2e31ef923fd54683a2d57494e66c"
+    ],
+    "checkpoints": [
+      "checkpoint.note"
+    ],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": "proof.json",
+    "tsr": null,
+    "vkeys": [
+      "demo-log-key+4ab317a3+AYRRWfas2UF7v8fs0HKzwJNeBlS6dFgUQTRlhh391cXH"
+    ]
+  },
+  "description": "Inclusion proof checked alongside the full log.",
+  "expect": {
+    "exit": 0,
+    "layers": {
+      "approval_gate": "ok",
+      "approver_signatures": "ok",
+      "chain_links": "ok",
+      "checkpoint_root": "ok",
+      "checkpoint_signature": "ok",
+      "entry_hashes": "ok",
+      "events": "ok",
+      "format": "ok",
+      "inclusion_proof": "ok",
+      "timestamp": "not_checked"
+    }
+  }
+}

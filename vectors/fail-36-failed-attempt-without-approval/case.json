@@ -1,0 +1,24 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [
+      "checkpoint.note"
+    ],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": [
+      "demo-log-key+4ab317a3+AYRRWfas2UF7v8fs0HKzwJNeBlS6dFgUQTRlhh391cXH"
+    ]
+  },
+  "description": "phase=failed may mean partial execution, so it is gated like executed: no approval, fail.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "approval_gate": "fail",
+      "events": "ok"
+    }
+  }
+}

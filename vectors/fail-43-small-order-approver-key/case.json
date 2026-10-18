@@ -1,0 +1,20 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": []
+  },
+  "description": "The approval is \"signed\" with the identity point as public key, which satisfies the equation for any message. Small-order keys are rejected.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "approver_signatures": "fail",
+      "events": "ok"
+    }
+  }
+}

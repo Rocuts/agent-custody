@@ -1,0 +1,19 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": []
+  },
+  "description": "chain_id carries a trailing newline escape (\"...\\n\"); hex fields are exactly 64 characters.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "format": "fail"
+    }
+  }
+}

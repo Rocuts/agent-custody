@@ -1,0 +1,23 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [
+      "checkpoint.note"
+    ],
+    "entry": "entry.json",
+    "log": null,
+    "ots": null,
+    "proof": "proof.json",
+    "tsr": null,
+    "vkeys": [
+      "demo-log-key+4ab317a3+AYRRWfas2UF7v8fs0HKzwJNeBlS6dFgUQTRlhh391cXH"
+    ]
+  },
+  "description": "The disclosed entry hashes correctly but carries an extra top-level member that the entry hash does not cover. It is rejected instead of being reported as matched.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "inclusion_proof": "fail"
+    }
+  }
+}

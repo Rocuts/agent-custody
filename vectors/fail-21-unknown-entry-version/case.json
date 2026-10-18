@@ -1,0 +1,19 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": []
+  },
+  "description": "Entries declare v=2. A v1 verifier fails closed instead of guessing.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "format": "fail"
+    }
+  }
+}

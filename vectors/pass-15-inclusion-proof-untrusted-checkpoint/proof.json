@@ -1,0 +1,12 @@
+{
+  "audit_path": [
+    "89a042d87c10ca3c1440a8399ca239fb8f92b4c4850cee80b4a6b0688e04413e",
+    "32c85b058086d420f47cce0d6d68d75aeb85efda87580a19a302f30a6ad5613d",
+    "4b6902a1e753afac355d23f36890c7c3969a2e5a9979ac1bfda6ecd8628f9abd"
+  ],
+  "chain_id": "71c1224b0c1b6d2548b9712f98a43a59fcc80ef3c3c16d201ac212b8d594253e",
+  "entry_hash": "66706d1e30b8bf9258ad1f7af10b78785ea921a278ac953c5ff6b8dd13a9f846",
+  "leaf_index": 2,
+  "tree_size": 5,
+  "v": 1
+}

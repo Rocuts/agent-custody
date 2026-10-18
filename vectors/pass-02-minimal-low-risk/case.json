@@ -1,0 +1,32 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [
+      "checkpoint.note"
+    ],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": [
+      "demo-log-key+4ab317a3+AYRRWfas2UF7v8fs0HKzwJNeBlS6dFgUQTRlhh391cXH"
+    ]
+  },
+  "description": "Smallest useful chain: open, request, executed. No approvals involved.",
+  "expect": {
+    "exit": 0,
+    "layers": {
+      "approval_gate": "not_checked",
+      "approver_signatures": "not_checked",
+      "chain_links": "ok",
+      "checkpoint_root": "ok",
+      "checkpoint_signature": "ok",
+      "entry_hashes": "ok",
+      "events": "ok",
+      "format": "ok",
+      "inclusion_proof": "not_checked",
+      "timestamp": "not_checked"
+    }
+  }
+}

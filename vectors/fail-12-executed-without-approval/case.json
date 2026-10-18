@@ -1,0 +1,26 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [
+      "checkpoint.note"
+    ],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": [
+      "demo-log-key+4ab317a3+AYRRWfas2UF7v8fs0HKzwJNeBlS6dFgUQTRlhh391cXH"
+    ]
+  },
+  "description": "Self-consistent log that records an approval-required action executed with no human approval. All hashes are valid; the policy layer catches it.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "approval_gate": "fail",
+      "chain_links": "ok",
+      "entry_hashes": "ok",
+      "events": "ok"
+    }
+  }
+}

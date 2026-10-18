@@ -1,0 +1,27 @@
+{
+  "args": {
+    "approver_keys": [
+      "approver-1=62c5ac0e3c37e97661afc9e8b66dad63fcae2e31ef923fd54683a2d57494e66c"
+    ],
+    "checkpoints": [
+      "checkpoint.note"
+    ],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": [
+      "demo-log-key+4ab317a3+AYRRWfas2UF7v8fs0HKzwJNeBlS6dFgUQTRlhh391cXH"
+    ]
+  },
+  "description": "Entry 1 altered AND its own hash recomputed; the next entry's prev_hash exposes it, and the checkpoint root differs.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "chain_links": "fail",
+      "checkpoint_root": "fail",
+      "entry_hashes": "ok"
+    }
+  }
+}

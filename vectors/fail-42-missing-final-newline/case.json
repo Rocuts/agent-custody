@@ -1,0 +1,19 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": []
+  },
+  "description": "The last line has no terminating newline (an interrupted write looks like this).",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "format": "fail"
+    }
+  }
+}

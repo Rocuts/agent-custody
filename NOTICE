@@ -1,0 +1,20 @@
+agent-custody
+Copyright 2026 Orbexs and the agent-custody contributors (see AUTHORS)
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+The specification and documentation are licensed under CC-BY-4.0 (see LICENSE-SPEC).
+
+This product includes code derived from RFC 8032, Section 6
+("Ed25519 Python Illustration"), Copyright (c) 2017 IETF Trust and the
+persons identified as authors of the code, licensed under the Revised BSD
+License (IETF Trust Legal Provisions, Section 4.c). See
+verifier/agent_custody_verify.py, writer/agent_custody_write.py and
+LICENSES/BSD-3-Clause-IETF.txt.
+
+Other specifications implemented from their text (no third-party code):
+  - RFC 6962 / RFC 9162  Merkle tree hashes and inclusion proofs
+  - RFC 8785             JSON Canonicalization Scheme (subset)
+  - C2SP signed-note     https://c2sp.org/signed-note
+  - C2SP tlog-checkpoint https://c2sp.org/tlog-checkpoint
+Optional external tools referenced, not bundled: OpenTimestamps client (`ots`,
+LGPL-3.0-or-later) and OpenSSL (`openssl ts`).

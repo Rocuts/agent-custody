@@ -1,0 +1,26 @@
+Copyright 2026 Orbexs and the agent-custody contributors (see AUTHORS)
+
+The specification and the prose documentation in this repository
+(SPEC.md, LIMITS.md, docs/, README.md, skills/**/SKILL.md) are licensed under
+the Creative Commons Attribution 4.0 International license (CC-BY-4.0),
+SPDX identifier: CC-BY-4.0
+
+Full legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+
+You are free to share and adapt the material for any purpose, even
+commercially, provided you give appropriate credit, link to the license and
+indicate if changes were made.
+
+All source code (verifier/, writer/, tools/, tests/, vectors/, examples/ data,
+.github/) is licensed under the Apache License 2.0, see LICENSE. The parts of
+verifier/agent_custody_verify.py and writer/agent_custody_write.py derived from
+RFC 8032 Section 6 are additionally under the Revised BSD License of the IETF
+Trust, see LICENSES/BSD-3-Clause-IETF.txt.
+
+Any other file (including CHANGELOG.md, CONTRIBUTING.md, SECURITY.md, AUTHORS,
+NOTICE, examples/*/README.md, vectors/README.md and the configuration files) is
+licensed under the Apache License 2.0, see LICENSE. The README.md at the root
+and docs/ are covered by the CC-BY-4.0 paragraph above.
+
+CODE_OF_CONDUCT.md is adapted from the Contributor Covenant, version 2.1
+(https://www.contributor-covenant.org), which is licensed under CC-BY-4.0.

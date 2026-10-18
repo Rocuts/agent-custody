@@ -1,0 +1,19 @@
+{
+  "args": {
+    "approver_keys": [],
+    "checkpoints": [],
+    "entry": null,
+    "log": "log.jsonl",
+    "ots": null,
+    "proof": null,
+    "tsr": null,
+    "vkeys": []
+  },
+  "description": "A float inside an event: not representable in the canonical form, rejected at parse time.",
+  "expect": {
+    "exit": 1,
+    "layers": {
+      "format": "fail"
+    }
+  }
+}
