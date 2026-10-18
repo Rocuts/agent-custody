@@ -4,28 +4,32 @@
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](verifier/agent_custody_verify.py)
 
-Tamper-evident logs of what an AI agent did and which human approved it, checkable by someone who doesn't trust you.
+A tamper-evident log of what an AI agent did and which key holder approved it, plus a verifier that someone who
+doesn't trust you can run.
 
 Your agent changed a firewall rule at 3 a.m. Which key signed off on it, and can you show the log wasn't edited
 afterward?
 
-agent-custody is a log format and a one-file verifier for that question. The log records what the agent did,
-which key holder approved it, and what a reviewer from a second AI provider said. Anyone holding your checkpoint key can then
-check that none of it changed after the checkpoint was signed. The verifier is plain Python with no dependencies.
+agent-custody is a log format and a one-file verifier for that question. The log records each action the agent asked
+for and ran, the policy decisions, the human approvals, and what a reviewer from a second AI provider said. You sign
+checkpoints of the log with a key that should live off the agent's host. Anyone with the matching public key can then
+check that the entries a checkpoint covers have not changed since it was signed. The verifier is a single Python file
+with no dependencies.
 
 Status: v0.1, experimental. The format may change before 1.0. [Resumen en español](docs/es/RESUMEN.md).
 
 ## Who it's for
 
-- Teams running agents that can touch production: infrastructure, credentials, customer data.
-- MSPs and MSSPs whose agents act inside client environments and need to hand the client a record they can check.
-- Authorized pentest and red-team work, where each scan or exploit step should trace back to a signed approval.
-- Auditors and customers who want to verify that record themselves instead of reading a screenshot of it.
+- Teams whose agents can touch production systems, credentials or customer data.
+- MSPs and MSSPs whose agents work inside client environments and who need to give the client a record the client can
+  check.
+- Authorized pentest and red-team work, where every scan or exploit step should trace back to a signed approval.
+- Auditors and customers who want to run the check themselves.
 
 ## Quickstart
 
-You need Python 3.10 or newer. The verifier refuses to run on anything older, and some systems still ship an older
-`python3` (stock macOS has 3.9), so check `python3 --version` first.
+You need Python 3.10 or newer. Check `python3 --version` first: stock macOS still ships 3.9, and the verifier exits
+with an error on anything older than 3.10.
 
 ```sh
 # 1. verify a synthetic log: an agent rotates a Wi-Fi passphrase after a signed human approval
@@ -37,14 +41,14 @@ python3 verifier/agent_custody_verify.py examples/01-support-wifi-password/log.j
 # 2. tamper with a copy: change the approved target
 sed 's/ap-guest-demo/ap-admin-demo/' examples/01-support-wifi-password/log.jsonl > /tmp/tampered.jsonl
 
-# 3. verify again and watch it fail, layer by layer
+# 3. verify the copy
 python3 verifier/agent_custody_verify.py /tmp/tampered.jsonl \
   --checkpoint examples/01-support-wifi-password/checkpoint.note \
   --vkey "$(cat examples/01-support-wifi-password/vkey.txt)"; echo "exit code: $?"
 ```
 
-The first command prints one line per layer (`ok`, `fail`, `not_checked` or `unavailable`) and exits 0. It never
-prints a bare "VALID". The last line reads:
+The first command prints one line per layer, each `ok`, `fail`, `not_checked` or `unavailable`, and exits 0. It never
+prints a bare "VALID". Its last line is:
 
 ```
 RESULT: NO INCONSISTENCY FOUND in the 8 layer(s) that passed; 2 layer(s) not checked or unavailable. This is not proof of authenticity, correctness or that the host was uncompromised (see LIMITS.md).
@@ -73,36 +77,39 @@ RESULT: FAIL - failed layers: entry_hashes
    RFC 3161               not the whole log       the ones it could not check
 ```
 
-The log holds four event types, plus `x-*` extensions: `action` (requested, executed, failed), `decision` (allow,
-deny, escalate), `human_approval` and `cross_verification`. [SPEC.md](SPEC.md) has the details.
+Entry 0 is always a `chain_open` event. After it come `action` (phase `requested`, `executed` or `failed`),
+`decision` (`allow`, `deny` or `escalate`), `human_approval` and `cross_verification`. Custom event types must start
+with `x-`. [SPEC.md](SPEC.md) has the schemas.
 
 ## What's different
 
-Plenty of projects hash-chain agent logs. This one adds three things.
+Plenty of projects hash-chain agent logs. Three things set this one apart.
 
-1. **Approvals are checked, not just stored.** An approval records a digest of what the human was shown and can be
-   signed with the approver's own key. The `approval_gate` layer fails a log that records an approval-required action
-   as executed before or without its approval, or any action executed after a policy `deny` that no later human
-   approval lifted (a later `allow` does not count). It fails even when every hash is valid.
-2. **Cross-provider review is an event.** "A model from provider B reviewed provider A's work and disagreed" becomes an
-   ordered, hash-chained entry. The verifier works out from the recorded provider names whether reviewer and author
-   came from different providers. Those names are self-declared.
-3. **Small enough to read.** The verifier is a single Python file using only the standard library, with pure-Python
-   Ed25519 (RFC 8032) and RFC 6962/9162 Merkle proofs. It is tested against the RFC vectors, the Certificate Transparency
-   reference tree, and [69 vectors](vectors/README.md) of altered, reordered, truncated, transplanted and forged logs
+1. The verifier checks approvals against actions. An approval records a digest of what the human was shown, and the
+   approver can sign it with their own key. The `approval_gate` layer fails the log if an action that needed approval
+   ran while its most recent approval was missing, rejected or expired, reused an approval that an earlier attempt had
+   already consumed, or ran after a policy `deny` that no later human approval lifted. A later `allow` does not lift a deny. This layer can
+   fail even when every hash is valid.
+2. Cross-provider review has its own event type. When a model from one provider reviews another provider's work, the
+   reviewers and their verdicts go into the chain like any other entry. The verifier recomputes from the recorded
+   provider names whether author and reviewer differ. The writer declares those names; nothing authenticates them.
+3. The verifier is about 1,200 lines of standard-library Python, including its own Ed25519 (RFC 8032) and RFC
+   6962/9162 Merkle proofs. The tests use the RFC 8032 vectors, the RFC 6962 reference tree from Certificate
+   Transparency, and [69 vectors](vectors/README.md) of altered, reordered, truncated, transplanted and forged logs
    that must fail.
 
-It reuses existing standards rather than inventing new ones: RFC 6962/9162 Merkle trees, RFC 8785 canonical JSON,
-C2SP signed-note checkpoints, OpenTimestamps and RFC 3161.
+The format builds on RFC 6962/9162 Merkle trees, RFC 8785 canonical JSON, C2SP signed-note checkpoints, OpenTimestamps
+and RFC 3161.
 
 ## Limits
 
-The full list is in [LIMITS.md](LIMITS.md). The three that matter most:
+The full list is in [LIMITS.md](LIMITS.md). The ones that matter most:
 
 - It shows the record hasn't changed since a checkpoint. It doesn't show the events happened, or that the host writing
   them was clean. An attacker who controls the host before the checkpoint can write a consistent false log.
 - Without a signed checkpoint stored where the log writer can't reach it, truncation or a full rewrite goes undetected
   ([`pass-12`](vectors/pass-12-limit-full-rewrite-no-checkpoint), [`pass-13`](vectors/pass-13-limit-truncation-no-checkpoint)).
+- An approver signature shows that the holder of a key signed. Tying that key to a person is up to your organisation.
 - It is not an electronic signature with legal effect, a timestamp authority or a compliance certification.
 
 ## What's here
@@ -121,14 +128,15 @@ The full list is in [LIMITS.md](LIMITS.md). The three that matter most:
 
 ## Roadmap
 
-Plans, not promises. 0.2: consistency proofs, witness cosignatures, and signed-note interop tests against Go tooling
-in CI. 0.3: per-actor keys and passkey attestations, a key rotation record, and receipt export.
+Nothing here is promised. Planned for 0.2: consistency proofs between checkpoints, witness cosignatures, and CI
+interop tests against Go signed-note tooling. For 0.3: per-actor keys and passkey attestations, a key rotation record,
+and receipt export.
 
 ## How this was built
 
-The maintainers designed and directed the project and are responsible for it. Most of the code, tests and docs, and the
-pre-publication reviews, were done with AI coding assistants from two providers; no independent human security audit has
-been done, and the project is not affiliated with or endorsed by any AI provider.
+The maintainers designed and directed the project and are responsible for it. AI coding assistants from two providers
+wrote most of the code, tests and docs, and did the pre-publication reviews. No independent human security audit has
+been done. The project is not affiliated with or endorsed by any AI provider.
 
 ## Contributing, security, license
 

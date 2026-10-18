@@ -4,28 +4,28 @@
 document.*
 
 agent-custody makes a log of agent actions and human approvals tamper-evident: a third party who holds a trusted
-checkpoint key can detect changes made after the fact. That is the whole claim. Everything below follows from it.
+checkpoint key can detect changes made after the checkpoint was signed. That is the whole claim.
 
 ## What it is not
 
 1. Not an electronic signature with legal effect. The Ed25519 signatures are ordinary cryptographic signatures, with
    no certificate authority, accredited provider or regulator behind them. Whether a court or counterparty accepts
-   them depends on local law and on contract, so ask a lawyer in your jurisdiction. Whether they count as any kind of
-   electronic signature under a given law is a legal question this project does not answer.
+   them, and whether they count as an electronic signature under a given law, depends on local law and on contract.
+   Ask a lawyer in your jurisdiction.
 2. Not a trusted-timestamp service. OpenTimestamps and RFC 3161 support is optional and external. An OpenTimestamps
    proof shows a hash existed before a Bitcoin block. An RFC 3161 token shows a hash existed before a time asserted by
    a timestamp authority. Neither makes this project a qualified or accredited timestamp, and the stdlib verifier
    verifies neither fully; it reports `unavailable`.
 3. Not proof that the host was intact. If the machine that writes the log, the agent runtime or the signing key is
-   compromised *before* a checkpoint is signed, the log can be false and still verify. A hash chain detects changes
-   after the fact. It cannot detect lies told at write time.
+   compromised *before* a checkpoint is signed, the log can be false and still verify. A hash chain detects later
+   edits; it cannot detect false entries written in the first place.
 4. Not proof that the recorded events happened. It shows what was recorded, in what order, and that the record has not
    changed since the checkpoint. It does not observe the agent or the world.
 5. Not an identity system. A pinned approver key shows that whoever held that key signed that approval. Whether that
-   was the named person is an organisational question (key custody, onboarding), not a cryptographic one.
-6. Not a compliance certification. It can produce evidence that helps with record-keeping and oversight duties, such
-   as logging obligations in AI or security regulation. It does not make a system or organisation compliant with any
-   regulation, standard or framework, and nothing in this repository claims that it does.
+   was the named person depends on how your organisation hands out and guards keys; cryptography can't tell you.
+6. Not a compliance certification. The log can serve as evidence for record-keeping and oversight duties, such as
+   logging obligations in AI or security regulation. It does not make a system or organisation compliant with any
+   regulation, standard or framework.
 7. Not confidentiality. Logs are plain JSON. Keep secrets and personal data out of events; record digests instead.
 8. Not availability or backup. If a log and all its checkpoints are deleted, there is nothing left to compare against.
 
@@ -74,7 +74,7 @@ Wording the project supports:
 - "detects alteration, reordering and truncation relative to a signed checkpoint"
 - "the verifier tells you which checks it ran and which it could not"
 
-Wording to avoid, because the project cannot back it up. It is listed here so reviewers can check text against it.
+Wording to avoid, because the project cannot back it up. A test scans the repository for several of them.
 
 - *immutable*, *tamper-proof*, *unforgeable*
 - *non-repudiation* (an approver key signature is evidence about a key holder, not a guarantee of attribution)
